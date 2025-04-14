@@ -6,8 +6,6 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 interface RouteParams {
   params: { id: string };
 }
-
-// GET /api/posts/[id] - Fetch a single post
 export async function GET(request: Request, { params }: RouteParams) {
   const { id } = params;
   try {
@@ -40,8 +38,6 @@ export async function GET(request: Request, { params }: RouteParams) {
     if (!post) {
       return new NextResponse('Post not found', { status: 404 });
     }
-
-    // Optional: Fetch if the current user has liked this post (if logged in)
     const session = await getServerSession(authOptions);
     let hasLiked = false;
     if (session?.user?.id) {
@@ -55,18 +51,13 @@ export async function GET(request: Request, { params }: RouteParams) {
         });
         hasLiked = !!like;
     }
-
-    // Combine post data with like status
     const postData = { ...post, hasLiked };
 
     return NextResponse.json(postData);
   } catch (error) {
-    // console.error(`Failed to fetch post ${id}:`, error);
     return new NextResponse('Failed to fetch post', { status: 500 });
   }
 }
-
-// PUT /api/posts/[id] - Update a post (requires authentication & ownership)
 export async function PUT(request: Request, { params }: RouteParams) {
   const session = await getServerSession(authOptions);
   const { id } = params;
@@ -87,15 +78,11 @@ export async function PUT(request: Request, { params }: RouteParams) {
     }
 
     const body = await request.json();
-    // Expect categoryName instead of categoryId
     const { title, content, categoryName, imageUrl } = body; 
 
-    // Validate required fields for update
     if (!title || !content || !categoryName) {
       return new NextResponse('Missing required fields: title, content, categoryName', { status: 400 });
     }
-
-    // Find or create the category (same logic as POST /api/posts)
     const category = await prisma.category.upsert({
       where: { name: categoryName.trim() },
       update: {}, 
@@ -109,10 +96,10 @@ export async function PUT(request: Request, { params }: RouteParams) {
       data: {
         title,
         content,
-        categoryId, // Use the found or created categoryId
+        categoryId,
         imageUrl: imageUrl !== undefined ? imageUrl : post.imageUrl,
       },
-       include: { // Optionally include relations in response
+       include: {
           category: true,
           author: { select: { name: true, email: true } }
       }
@@ -120,16 +107,12 @@ export async function PUT(request: Request, { params }: RouteParams) {
 
     return NextResponse.json(updatedPost);
   } catch (error) {
-    // console.error(`Failed to update post ${id}:`, error);
-    // Handle potential Prisma errors like unique constraint violation for category name if needed
     if (error instanceof Error && error.message.includes('Unique constraint failed')) {
          return new NextResponse('Error handling category during update', { status: 409 });
     }
     return new NextResponse('Failed to update post', { status: 500 });
   }
 }
-
-// DELETE /api/posts/[id] - Delete a post (requires authentication & ownership)
 export async function DELETE(request: Request, { params }: RouteParams) {
   const session = await getServerSession(authOptions);
   const { id } = params;
@@ -144,21 +127,15 @@ export async function DELETE(request: Request, { params }: RouteParams) {
     if (!post) {
       return new NextResponse('Post not found', { status: 404 });
     }
-
-    // Check ownership
     if (post.authorId !== session.user.id) {
       return new NextResponse('Forbidden', { status: 403 });
     }
-
-    // Perform deletion (Prisma handles cascading deletes for likes/comments based on schema)
     await prisma.post.delete({ where: { id } });
 
-    return new NextResponse(null, { status: 204 }); // No Content
+    return new NextResponse(null, { status: 204 });
   } catch (error) {
-    // console.error(`Failed to delete post ${id}:`, error);
-    // Handle potential errors like foreign key constraints if cascading delete isn't set up correctly
     if (error instanceof Error && error.message.includes('foreign key constraint')) {
-         return new NextResponse('Cannot delete post due to related data', { status: 409 }); // Conflict
+         return new NextResponse('Cannot delete post due to related data', { status: 409 });
     }
     return new NextResponse('Failed to delete post', { status: 500 });
   }

@@ -44,7 +44,7 @@ export default function RegisterPage() {
         if (signInResult?.error) {
           setError(`Registration ok, but login failed. Please login manually.`);
           setSuccess(null); 
-          router.push('/login'); // Redirect to login if auto-login fails
+          router.push('/login');
         } else if (signInResult?.ok) {
           router.push('/');
           router.refresh();
@@ -77,7 +77,7 @@ export default function RegisterPage() {
               Full Name (Optional)
             </label>
             <input
-              className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+              className="appearance-none block w-full px-3 py-2 border text-black border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
               id="name"
               type="text"
               autoComplete="name"
@@ -92,7 +92,7 @@ export default function RegisterPage() {
               Email Address
             </label>
             <input
-              className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+              className="appearance-none block w-full px-3 py-2 border text-black border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
               id="email"
               type="email"
               autoComplete="email"
@@ -108,7 +108,7 @@ export default function RegisterPage() {
               Password
             </label>
             <input
-              className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+              className="appearance-none block w-full px-3 py-2 border text-black border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
               id="password"
               type="password"
               autoComplete="new-password"
@@ -124,7 +124,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-black bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               {loading ? 'Creating Account...' : 'Create Account'}
             </button>

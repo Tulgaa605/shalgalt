@@ -125,7 +125,7 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
             {post.category.name}
           </span>
           <div className="text-sm text-gray-500">
-            <span>By <span className="font-medium text-gray-700 hover:text-gray-900 transition-colors">{post.author.name || post.author.email}</span></span>
+            <span>By <span className="font-medium text-black hover:text-gray-900 transition-colors">{post.author.name || post.author.email}</span></span>
             <span className="mx-2">·</span>
             <span>{format(new Date(post.createdAt), 'PPP')}</span>
             {post.createdAt.toISOString() !== post.updatedAt.toISOString() && (

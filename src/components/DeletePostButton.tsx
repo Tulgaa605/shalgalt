@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FiTrash2 } from 'react-icons/fi';
-import { toast } from 'sonner'; // Assuming you have a toast library like sonner installed
+import { toast } from 'sonner';
 
 interface DeletePostButtonProps {
   postId: string;
@@ -36,9 +36,8 @@ export default function DeletePostButton({ postId, isAuthor }: DeletePostButtonP
       }
 
       toast.success('Post deleted successfully!');
-      // Redirect to homepage or another appropriate page after deletion
       router.push('/'); 
-      router.refresh(); // Refresh server components
+      router.refresh();
     } catch (error) {
       console.error('Delete error:', error);
       toast.error((error as Error).message || 'An error occurred while deleting the post.');
@@ -48,7 +47,7 @@ export default function DeletePostButton({ postId, isAuthor }: DeletePostButtonP
   };
 
   if (!isAuthor) {
-    return null; // Don't render the button if the user is not the author
+    return null;
   }
 
   return (

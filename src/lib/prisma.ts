@@ -1,17 +1,8 @@
 import { PrismaClient } from '@prisma/client';
-
-// Declare a global variable to hold the Prisma Client instance
 declare global {
-  // eslint-disable-next-line no-var
   var prisma: PrismaClient | undefined;
 }
-
-// Instantiate PrismaClient, reusing the existing instance in development
-// or creating a new one in production.
 const prisma = global.prisma || new PrismaClient();
-
-// In development, assign the instance to the global variable to avoid
-// creating multiple instances due to Next.js hot reloading.
 if (process.env.NODE_ENV === 'development') {
   global.prisma = prisma;
 }

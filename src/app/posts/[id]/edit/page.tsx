@@ -15,23 +15,20 @@ interface PostFormData {
 interface PostData extends PostFormData {
     id: string;
     authorId: string;
-    // Add other fields if needed, like category object itself
     category?: { id: string; name: string };
 }
 
 export default function EditPostPage() {
   const router = useRouter();
   const params = useParams();
-  const postId = params.id as string; // Get post ID from URL
+  const postId = params.id as string;
   const { data: session, status } = useSession();
 
   const [formData, setFormData] = useState<PostFormData>({ title: '', content: '', categoryName: '', imageUrl: '' });
   const [originalPost, setOriginalPost] = useState<PostData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [fetching, setFetching] = useState(true); // State for fetching initial data
-
-  // Fetch post data on mount
+  const [fetching, setFetching] = useState(true);
   useEffect(() => {
     if (!postId) return;
 
@@ -41,24 +38,21 @@ export default function EditPostPage() {
         const res = await fetch(`/api/posts/${postId}`);
         if (!res.ok) {
           if (res.status === 404) {
-            notFound(); // Use Next.js notFound helper
+            notFound();
           } else {
             throw new Error('Failed to fetch post data');
           }
-          return; // Stop execution if not ok
+          return;
         }
         const data: PostData = await res.json();
         
-        // Security check: Ensure logged-in user is the author
         if (status === 'authenticated' && session?.user?.id !== data.authorId) {
              setError("You are not authorized to edit this post.");
-             // Optionally redirect
-             // router.push('/'); 
-             setOriginalPost(data); // Still set data to show content if desired, but disable form
+             setOriginalPost(data);
              setFormData({ 
                 title: data.title, 
                 content: data.content, 
-                categoryName: data.category?.name || '', // Use fetched category name
+                categoryName: data.category?.name || '',
                 imageUrl: data.imageUrl 
             });
              setFetching(false);
@@ -69,7 +63,7 @@ export default function EditPostPage() {
         setFormData({ 
             title: data.title, 
             content: data.content, 
-            categoryName: data.category?.name || '', // Use fetched category name
+            categoryName: data.category?.name || '',
             imageUrl: data.imageUrl 
         });
 
@@ -80,14 +74,11 @@ export default function EditPostPage() {
       }
     };
 
-    // Only fetch if authenticated or still loading session
     if (status !== 'unauthenticated') {
         fetchPost();
     }
 
-  }, [postId, status, session?.user?.id]); // Re-fetch if postId or session status changes
-
-  // Redirect if unauthenticated after session check
+  }, [postId, status, session?.user?.id]);
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push(`/login?callbackUrl=/posts/${postId}/edit`);
@@ -140,10 +131,8 @@ export default function EditPostPage() {
         }
         throw new Error(errorData.message || 'Failed to update post');
       }
-
-      // Redirect back to the post detail page after successful update
       router.push(`/posts/${postId}`);
-      router.refresh(); // Important to refresh data on the detail page
+      router.refresh();
 
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
@@ -151,15 +140,12 @@ export default function EditPostPage() {
       setLoading(false);
     }
   };
-
-  // Loading and Auth States
   if (fetching || status === 'loading') {
     return <div className="flex justify-center items-center h-64"><p>Loading post data...</p></div>;
   }
   if (status === 'unauthenticated') {
      return <div className="flex justify-center items-center h-64"><p>Redirecting to login...</p></div>;
   }
-   // If user is authenticated but not the author (and error is set)
   if (error && originalPost && session?.user?.id !== originalPost?.authorId) {
       return (
         <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
@@ -173,7 +159,6 @@ export default function EditPostPage() {
         </div>
       );
   }
-  // Handle general fetch errors after loading/auth checks
   if (error) {
       return (
           <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
@@ -189,12 +174,8 @@ export default function EditPostPage() {
   }
   
   if (!originalPost) {
-      // This case should ideally be handled by notFound() triggered during fetch
       return <div className="flex justify-center items-center h-64"><p>Post not found.</p></div>;
   }
-
-
-  // Determine if form should be disabled (e.g., if user is not author)
   const isFormDisabled = loading || (status === 'authenticated' && session?.user?.id !== originalPost?.authorId);
 
   return (
@@ -213,7 +194,7 @@ export default function EditPostPage() {
           <input
             type="text"
             id="title"
-            name="title" // Add name attribute for handleInputChange
+            name="title"
             value={formData.title}
             onChange={handleInputChange}
             className="appearance-none block w-full text-black px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
@@ -227,7 +208,7 @@ export default function EditPostPage() {
           </label>
           <textarea
             id="content"
-            name="content" // Add name attribute
+            name="content"
             rows={10}
             value={formData.content}
             onChange={handleInputChange}
@@ -243,7 +224,7 @@ export default function EditPostPage() {
           <input
             type="text"
             id="categoryName"
-            name="categoryName" // Add name attribute
+            name="categoryName"
             value={formData.categoryName}
             onChange={handleInputChange}
             className="appearance-none block w-full px-3 text-black py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
@@ -258,8 +239,8 @@ export default function EditPostPage() {
           <input
             type="url" 
             id="imageUrl"
-            name="imageUrl" // Add name attribute
-            value={formData.imageUrl || ''} // Handle null value for input
+            name="imageUrl"
+            value={formData.imageUrl || ''}
             onChange={handleInputChange}
             className="appearance-none block w-full px-3 text-black py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
             placeholder="https://example.com/image.jpg"

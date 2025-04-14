@@ -4,13 +4,10 @@ import React, { useState, useTransition } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-
-// Define the shape of the comment data RETURNED BY THE API
-// createdAt will likely be a string here
 interface NewCommentData {
     id: string;
     text: string;
-    createdAt: string; // API likely returns string
+    createdAt: string;
     userId: string;
     postId: string;
     user: {
@@ -22,7 +19,7 @@ interface NewCommentData {
 
 interface CommentFormProps {
   postId: string;
-  onCommentPosted: (newComment: NewCommentData) => void; // Callback to update parent state
+  onCommentPosted: (newComment: NewCommentData) => void;
 }
 
 export default function CommentForm({ postId, onCommentPosted }: CommentFormProps) {
@@ -60,19 +57,9 @@ export default function CommentForm({ postId, onCommentPosted }: CommentFormProp
             }
 
             const newComment: NewCommentData = await response.json();
-
-            // Clear the form
             setCommentText('');
-
-            // Call the callback to notify the parent component
             onCommentPosted(newComment);
-
-            // Optionally, you might still want a refresh if other parts of the page
-            // depend on comment count, etc., though direct state update is faster.
-            // router.refresh();
-
         } catch (err) {
-            // console.error("Comment error:", err);
             setError(err instanceof Error ? err.message : 'Could not post comment');
         }
     });
@@ -93,8 +80,6 @@ export default function CommentForm({ postId, onCommentPosted }: CommentFormProp
         </div>
     );
   }
-
-  // Improve form styling
   return (
     <form onSubmit={handleSubmit} className="mt-4 space-y-4">
       <div>
@@ -102,7 +87,7 @@ export default function CommentForm({ postId, onCommentPosted }: CommentFormProp
         <textarea
           id="commentText"
           rows={3}
-          className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+          className="appearance-none block w-full px-3 py-2 border text-black border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
           placeholder={`Write your comment as ${session?.user?.name || session?.user?.email}...`}
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
@@ -116,7 +101,7 @@ export default function CommentForm({ postId, onCommentPosted }: CommentFormProp
       <div className="flex justify-end">
           <button
             type="submit"
-            className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 ${isPending ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-black bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 ${isPending ? 'opacity-50 cursor-not-allowed' : ''}`}
             disabled={isPending || !commentText.trim()}
           >
             {isPending ? 'Posting...' : 'Post Comment'}

@@ -2,33 +2,31 @@
 
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
-import { FiLogIn, FiLogOut, FiUserPlus, FiPlusCircle } from 'react-icons/fi'; // Icons
+import { FiLogIn, FiLogOut, FiUserPlus, FiPlusCircle } from 'react-icons/fi';
+import SearchBar from '../../components/SearchBar';
 
 export default function Navbar() {
   const { data: session, status } = useSession();
   const isLoading = status === 'loading';
 
   return (
-    // Add bottom border, increase vertical padding (py-4)
-    <nav className="bg-white/90 shadow-lg sticky top-0 z-50 border-b border-primary-100/50 backdrop-blur-lg">
+    <nav className="bg-gray-400 shadow-lg sticky top-0 z-50 border-b border-primary-100/50 backdrop-blur-lg">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Adjust height if needed due to padding change, or remove h-16 and rely on padding */}
           <div className="flex justify-between items-center py-4"> 
-            {/* Logo/Brand Name - Use primary color on hover */}
             <Link href="/" className="group text-2xl font-bold relative">
               <span className="text-gray-900 group-hover:text-primary-800 transition-all duration-500">
                 Blog App
               </span>
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary-600 via-secondary-500 to-accent-500 group-hover:w-full transition-all duration-500 rounded-full"></span>
             </Link>
-            
-            {/* Navigation Links/Actions */}
+            <div className="flex-grow max-w-xs lg:max-w-sm xl:max-w-md mx-4">
+               <SearchBar />
+            </div>
             <div className="flex items-center space-x-4 sm:space-x-6">
               {isLoading ? (
                 <div className="h-9 w-28 bg-gradient-to-r from-primary-100 via-secondary-100 to-primary-100 rounded-2xl animate-pulse bg-[length:200%_100%] animate-shimmer"></div>
               ) : session ? (
                 <>
-                  {/* Use primary color for New Post button */}
                   <Link 
                     href="/create-post" 
                     className="group relative inline-flex items-center px-6 py-2.5 text-sm font-semibold rounded-2xl text-gray-900 overflow-hidden transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-primary-500/25 border border-primary-200/50"
@@ -61,7 +59,6 @@ export default function Navbar() {
                       Login
                     </span>
                   </Link>
-                  {/* Use primary color for Register button */}
                   <Link 
                     href="/register" 
                     className="group relative inline-flex items-center px-6 py-2.5 text-sm font-semibold rounded-2xl text-gray-900 overflow-hidden transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-primary-500/25 border border-primary-200/50"

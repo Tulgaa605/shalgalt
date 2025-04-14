@@ -49,7 +49,6 @@ export default function LikeButton({ postId, initialLikes, initialLiked }: LikeB
             }
 
         } catch (err) {
-            // console.error("Like error:", err);
             setError(err instanceof Error ? err.message : 'Could not update like status');
             setLikes(previousLikes);
             setIsLiked(previousIsLiked);
