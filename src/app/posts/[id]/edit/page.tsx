@@ -216,7 +216,7 @@ export default function EditPostPage() {
             name="title" // Add name attribute for handleInputChange
             value={formData.title}
             onChange={handleInputChange}
-            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+            className="appearance-none block w-full text-black px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
             required
             disabled={isFormDisabled}
           />
@@ -231,13 +231,13 @@ export default function EditPostPage() {
             rows={10}
             value={formData.content}
             onChange={handleInputChange}
-            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+            className="appearance-none block w-full text-black px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
             required
             disabled={isFormDisabled}
           />
         </div>
         <div>
-          <label htmlFor="categoryName" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="categoryName" className="block text-black text-sm font-medium text-gray-700 mb-1">
             Category Name
           </label>
           <input
@@ -246,7 +246,7 @@ export default function EditPostPage() {
             name="categoryName" // Add name attribute
             value={formData.categoryName}
             onChange={handleInputChange}
-            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+            className="appearance-none block w-full px-3 text-black py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
             required
             disabled={isFormDisabled}
           />
@@ -261,7 +261,7 @@ export default function EditPostPage() {
             name="imageUrl" // Add name attribute
             value={formData.imageUrl || ''} // Handle null value for input
             onChange={handleInputChange}
-            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+            className="appearance-none block w-full px-3 text-black py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
             placeholder="https://example.com/image.jpg"
             disabled={isFormDisabled}
           />
@@ -269,7 +269,7 @@ export default function EditPostPage() {
         <div>
           <button
             type="submit"
-            className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 ${isFormDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-black bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 ${isFormDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
             disabled={isFormDisabled}
           >
             {loading ? 'Saving Changes...' : 'Save Changes'}

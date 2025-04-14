@@ -57,12 +57,11 @@ export default function LikeButton({ postId, initialLikes, initialLiked }: LikeB
     });
   };
 
-  const buttonText = isLiked ? '❤️ Liked' : '🤍 Like';
   const buttonClasses = `
-    px-4 py-2 border rounded-md font-medium transition-colors duration-150 
+    group relative inline-flex items-center px-6 py-2.5 text-sm font-semibold rounded-2xl transition-all duration-300 transform hover:scale-[1.02]
     ${isLiked 
-        ? 'bg-primary-100 border-primary-300 text-primary-700 hover:bg-primary-200'
-        : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-100'
+        ? 'text-gray-900 bg-white border-2 border-primary-500 shadow-lg hover:shadow-primary-500/25'
+        : 'text-gray-900 bg-white border border-primary-200/50 shadow-md hover:shadow-lg'
     }
     ${isPending ? 'opacity-50 cursor-not-allowed' : ''}
     ${status === 'loading' ? 'opacity-50 cursor-wait' : ''}
@@ -76,12 +75,27 @@ export default function LikeButton({ postId, initialLikes, initialLiked }: LikeB
         className={buttonClasses}
         aria-pressed={isLiked}
       >
-        {buttonText}
+        <span className="relative flex items-center">
+          {isLiked ? (
+            <span className="transform transition-all duration-500 animate-bounce-slow group-hover:animate-float scale-110">❤️</span>
+          ) : (
+            <span className="transform transition-all duration-300 group-hover:scale-125 group-hover:rotate-12">🤍</span>
+          )}
+          <span className="ml-2 transform transition-all duration-300 group-hover:translate-x-0.5 text-gray-900 font-semibold">
+            {isLiked ? 'Liked' : 'Like'}
+          </span>
+        </span>
       </button>
-      <span className="text-sm text-gray-600">
-          {likes} {likes === 1 ? 'like' : 'likes'}
+      <span className="inline-flex items-center text-sm font-semibold text-gray-900 px-5 py-2.5 rounded-2xl bg-white border border-primary-200/50 shadow-md">
+          <span className={`w-1.5 h-1.5 rounded-full mr-2 ${likes > 0 ? 'bg-success-500' : 'bg-gray-400'}`}></span>
+          <span className="text-gray-900 font-semibold">{likes} {likes === 1 ? 'like' : 'likes'}</span>
       </span>
-      {error && <span className="text-red-600 text-sm">Error: {error}</span>}
+      {error && (
+        <span className="inline-flex items-center text-accent-800 text-sm font-semibold bg-white px-5 py-2.5 rounded-2xl border border-accent-200/30 shadow-md animate-pulse-slow">
+          <span className="w-1.5 h-1.5 bg-accent-500 rounded-full mr-2"></span>
+          <span className="text-accent-800 font-semibold">Error: {error}</span>
+        </span>
+      )}
     </div>
   );
 } 

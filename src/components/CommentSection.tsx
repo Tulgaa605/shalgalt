@@ -47,23 +47,38 @@ export default function CommentSection({ postId, initialComments }: CommentSecti
   };
 
   return (
-    <div className="border-t pt-8">
-      <h2 className="text-2xl font-semibold mb-4">Comments ({comments.length})</h2>
+    <div className="border-t border-gray-100 pt-8">
+      <h2 className="text-2xl font-bold mb-6 text-gray-900">Сэтгэгдлүүд ({comments.length})</h2>
       
       <CommentForm postId={postId} onCommentPosted={handleCommentPosted} />
 
       <div className="space-y-6 mt-8">
         {comments.length > 0 ? (
           comments.map((comment) => (
-            <div key={comment.id} className="bg-white p-4 rounded-md border border-gray-200 shadow-sm">
-              <p className="mb-2 whitespace-pre-wrap text-gray-800">{comment.text}</p>
-              <p className="text-xs text-gray-500">
-                By <span className="font-medium text-gray-700">{comment.user.name || comment.user.email}</span> on {format(comment.createdAt, 'PPp')}
-              </p>
+            <div key={comment.id} className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
+                    <span className="text-primary-600 font-semibold text-lg">
+                      {(comment.user.name || comment.user.email)?.charAt(0).toUpperCase()}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-gray-900 font-medium text-base leading-relaxed mb-3">{comment.text}</p>
+                  <div className="flex items-center text-sm text-gray-500">
+                    <span className="font-medium text-gray-700">{comment.user.name || comment.user.email}</span>
+                    <span className="mx-2">·</span>
+                    <span>{format(comment.createdAt, 'PPp')}</span>
+                  </div>
+                </div>
+              </div>
             </div>
           ))
         ) : (
-          <p className="text-gray-500 mt-4">No comments yet. Be the first to comment!</p>
+          <div className="text-center py-12 bg-gray-50 rounded-xl border border-gray-100">
+            <p className="text-gray-500 text-lg">Одоогоор сэтгэгдэл байхгүй байна. Анхны сэтгэгдэл үлдээгээрэй!</p>
+          </div>
         )}
       </div>
     </div>
